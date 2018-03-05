@@ -201,5 +201,52 @@ namespace Graphics1
         {
             pictureBox2.Image = ApplyMatrix((Bitmap)pictureBox1.Image, Emboss);
         }
+
+
+
+        //Displaying filters' kernels
+        private void meanToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var ker = new Kernel(3, 3, Mean, 9);
+            ker.Show();
+        }
+
+        private void gaussianToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var ker = new Kernel(3, 3, Gauss, 16);
+            ker.Show();
+        }
+
+        private void sharpeningToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            var ker = new Kernel(3, 3, Sharp);
+            ker.Show();
+        }
+
+        private void edgeDetectionToolStripMenuItem_Click_1(object sender, EventArgs e)
+        {
+            var ker = new Kernel(3, 3, Edge);
+            ker.Show();
+        }
+
+        private void embossToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            var ker = new Kernel(3, 3, Emboss);
+            ker.Show();
+        }
+
+        private void Generate_Click(object sender, EventArgs e)
+        {
+            if (textBox1.Text == "" || textBox2.Text == "") return;
+            int h, w;
+            try
+            {
+                h = Int32.Parse(textBox1.Text);
+                w = Int32.Parse(textBox2.Text);
+            }
+            catch (Exception) { return; }
+            var ker = new Kernel(h, w);
+            ker.Show();
+        }
     }
 }

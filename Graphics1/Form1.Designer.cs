@@ -47,6 +47,12 @@
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
+            this.loadKernelsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.meanToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.gaussianToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.sharpeningToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.edgeDetectionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.embossToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
@@ -56,7 +62,8 @@
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
-            this.filtersToolStripMenuItem});
+            this.filtersToolStripMenuItem,
+            this.loadKernelsToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(1053, 24);
@@ -210,6 +217,54 @@
             this.button1.TabIndex = 7;
             this.button1.Text = "Generate";
             this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.Generate_Click);
+            // 
+            // loadKernelsToolStripMenuItem
+            // 
+            this.loadKernelsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.meanToolStripMenuItem,
+            this.gaussianToolStripMenuItem,
+            this.sharpeningToolStripMenuItem1,
+            this.edgeDetectionToolStripMenuItem,
+            this.embossToolStripMenuItem1});
+            this.loadKernelsToolStripMenuItem.Name = "loadKernelsToolStripMenuItem";
+            this.loadKernelsToolStripMenuItem.Size = new System.Drawing.Size(85, 20);
+            this.loadKernelsToolStripMenuItem.Text = "Load kernels";
+            // 
+            // meanToolStripMenuItem
+            // 
+            this.meanToolStripMenuItem.Name = "meanToolStripMenuItem";
+            this.meanToolStripMenuItem.Size = new System.Drawing.Size(153, 22);
+            this.meanToolStripMenuItem.Text = "Mean";
+            this.meanToolStripMenuItem.Click += new System.EventHandler(this.meanToolStripMenuItem_Click);
+            // 
+            // gaussianToolStripMenuItem
+            // 
+            this.gaussianToolStripMenuItem.Name = "gaussianToolStripMenuItem";
+            this.gaussianToolStripMenuItem.Size = new System.Drawing.Size(153, 22);
+            this.gaussianToolStripMenuItem.Text = "Gaussian";
+            this.gaussianToolStripMenuItem.Click += new System.EventHandler(this.gaussianToolStripMenuItem_Click);
+            // 
+            // sharpeningToolStripMenuItem1
+            // 
+            this.sharpeningToolStripMenuItem1.Name = "sharpeningToolStripMenuItem1";
+            this.sharpeningToolStripMenuItem1.Size = new System.Drawing.Size(153, 22);
+            this.sharpeningToolStripMenuItem1.Text = "Sharpening";
+            this.sharpeningToolStripMenuItem1.Click += new System.EventHandler(this.sharpeningToolStripMenuItem1_Click);
+            // 
+            // edgeDetectionToolStripMenuItem
+            // 
+            this.edgeDetectionToolStripMenuItem.Name = "edgeDetectionToolStripMenuItem";
+            this.edgeDetectionToolStripMenuItem.Size = new System.Drawing.Size(153, 22);
+            this.edgeDetectionToolStripMenuItem.Text = "Edge detection";
+            this.edgeDetectionToolStripMenuItem.Click += new System.EventHandler(this.edgeDetectionToolStripMenuItem_Click_1);
+            // 
+            // embossToolStripMenuItem1
+            // 
+            this.embossToolStripMenuItem1.Name = "embossToolStripMenuItem1";
+            this.embossToolStripMenuItem1.Size = new System.Drawing.Size(153, 22);
+            this.embossToolStripMenuItem1.Text = "Emboss";
+            this.embossToolStripMenuItem1.Click += new System.EventHandler(this.embossToolStripMenuItem1_Click);
             // 
             // Form1
             // 
@@ -226,6 +281,7 @@
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "Form1";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Form1";
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
@@ -257,6 +313,12 @@
         private System.Windows.Forms.TextBox textBox2;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.ToolStripMenuItem loadKernelsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem meanToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem gaussianToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem sharpeningToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem edgeDetectionToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem embossToolStripMenuItem1;
     }
 }
 
