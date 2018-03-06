@@ -1,11 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Graphics1
@@ -31,11 +25,16 @@ namespace Graphics1
             {
                 pictureBox1.Image.Dispose();
             }
+            if (pictureBox2.Image != null)
+            {
+                pictureBox2.Image.Dispose();
+            }
             OpenFileDialog op = new OpenFileDialog();
             op.Filter = "JPeg Image|*.jpg|Bitmap Image|*.bmp|Gif Image|*.gif";
             if (op.ShowDialog() == DialogResult.OK)
             {
-                pictureBox1.Image = Grayscale(Image.FromFile(op.FileName));
+                //pictureBox1.Image = Grayscale(Image.FromFile(op.FileName));
+                pictureBox1.Image = Image.FromFile(op.FileName);
             }
         }
 
@@ -47,7 +46,6 @@ namespace Graphics1
             else return (int)n;
         }
 
-        //Grayscale
         private Bitmap Grayscale(Image img)
         {
             Color c;
@@ -135,103 +133,123 @@ namespace Graphics1
             }
         }
 
-        //Applies kernel matrix to image b, returns processed image
-        private Bitmap ApplyMatrix(Bitmap b, int[,] kernel, int divisor = 1, int offset = 0)
+        private Bitmap ApplyMatrix(int[,] kernel, int divisor = 1, int offset = 0)
         {
-            Bitmap result = new Bitmap(pictureBox1.Image);
+            Bitmap b, result;
+            try
+            {
+                b = new Bitmap(pictureBox1.Image);
+                result = new Bitmap(pictureBox1.Image);
 
-            int x, y;
-            int[] sum = new int[3];
-            Color c;
-            for (int i = 0; i < b.Width; i++)
-                for (int j = 0; j < b.Height; j++)
-                {
-                    for (int k = 0; k < 3; k++)
-                        sum[k] = 0;
-                    for (int m = 0; m < kernel.GetLength(1); m++)
-                        for (int n = 0; n < kernel.GetLength(0); n++)
+                int x, y;
+                int halfwidth = kernel.GetLength(1) / 2;
+                int halfheigth = kernel.GetLength(0) / 2;
+                int wend = halfwidth;
+                if (kernel.GetLength(1) % 2 == 1) wend++;
+                int hend = halfheigth;
+                if (kernel.GetLength(0) % 2 == 1) hend++;
+                int[] sum = new int[3];
+                Color c;
+
+                for (int i = 0; i < b.Width; i++)
+                    for (int j = 0; j < b.Height; j++)
+                    {
+                        for (int k = 0; k < 3; k++)
+                            sum[k] = 0;
+                        for (int m = -halfwidth; m < wend; m++)
+                            for (int n = -halfheigth; n < hend; n++)
+                            {
+                                if ((i + m) < 0) x = 0;
+                                else if ((i + m) >= b.Width) x = b.Width - 1;
+                                else x = i + m;
+
+                                if ((j + n) < 0) y = 0;
+                                else if ((j + n) >= b.Height) y = b.Height - 1;
+                                else y = j + n;
+
+                                c = b.GetPixel(x, y);
+                                sum[0] += c.R * kernel[n + halfheigth, m + halfwidth];
+                                sum[1] += c.G * kernel[n + halfheigth, m + halfwidth];
+                                sum[2] += c.B * kernel[n + halfheigth, m + halfwidth];
+                            }
+                        try
                         {
-                            if ((i + m) < 0) x = 0;
-                            else if ((i + m) >= b.Width) x = b.Width - 1;
-                            else x = i + m;
-
-                            if ((j + n) < 0) y = 0;
-                            else if ((j + n) >= b.Height) y = b.Height - 1;
-                            else y = j + n;
-
-                            c = b.GetPixel(x, y);
-                            sum[0] += c.R * kernel[n, m];
-                            sum[1] += c.G * kernel[n, m];
-                            sum[2] += c.B * kernel[n, m];
+                            result.SetPixel(i, j, Color.FromArgb(result.GetPixel(i, j).A, Check(sum[0] / divisor + offset), Check(sum[1] / divisor + offset), Check(sum[2] / divisor + offset)));
                         }
-                    try
-                    {
-                        result.SetPixel(i, j, Color.FromArgb(result.GetPixel(i, j).A, Check(sum[0] / divisor + offset), Check(sum[1] / divisor + offset), Check(sum[2] / divisor + offset)));
+                        catch (InvalidOperationException)
+                        {
+                            MessageBox.Show("Images with indexes pixels are unfortunately unsupported");
+                            break;
+                        }
                     }
-                    catch (InvalidOperationException)
-                    {
-                        MessageBox.Show("Images with indexes pixels are unfortunately unsupported");
-                        break;
-                    }
-                }
-            return result;
+                return result;
+            }
+            catch (NullReferenceException)
+            {
+                MessageBox.Show("No initial file was chosen");
+                return null;
+            }
         }
 
         private void meanFilterToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            pictureBox2.Image = ApplyMatrix((Bitmap)pictureBox1.Image, Mean, 9);
+            pictureBox2.Image = ApplyMatrix(Mean, 9);
         }
 
         private void gaussianBlurToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            pictureBox2.Image = ApplyMatrix((Bitmap)pictureBox1.Image, Gauss, 16);
+            pictureBox2.Image = ApplyMatrix(Gauss, 16);
         }
 
         private void sharpeningToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            pictureBox2.Image = ApplyMatrix((Bitmap)pictureBox1.Image, Sharp);
+            pictureBox2.Image = ApplyMatrix(Sharp);
         }
 
         private void edgeDetectionToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            pictureBox2.Image = ApplyMatrix((Bitmap)pictureBox1.Image, Edge);
+            pictureBox2.Image = ApplyMatrix(Edge);
         }
 
         private void embossToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            pictureBox2.Image = ApplyMatrix((Bitmap)pictureBox1.Image, Emboss);
+            pictureBox2.Image = ApplyMatrix(Emboss);
         }
 
+        public void applyCustom(int[,] kernel, int divisor, int offset)
+        {
+            pictureBox2.Image = ApplyMatrix(kernel, divisor, offset);
+        }
 
 
         //Displaying filters' kernels
         private void meanToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var ker = new Kernel(3, 3, Mean, 9);
+            var ker = new Kernel(this, 3, 3, Mean, 9);
             ker.Show();
         }
 
         private void gaussianToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var ker = new Kernel(3, 3, Gauss, 16);
+            var ker = new Kernel(this, 3, 3, Gauss, 16);
             ker.Show();
         }
 
         private void sharpeningToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            var ker = new Kernel(3, 3, Sharp);
+            var ker = new Kernel(this, 3, 3, Sharp);
             ker.Show();
         }
 
         private void edgeDetectionToolStripMenuItem_Click_1(object sender, EventArgs e)
         {
-            var ker = new Kernel(3, 3, Edge);
+            var ker = new Kernel(this, 3, 3, Edge);
             ker.Show();
         }
 
         private void embossToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            var ker = new Kernel(3, 3, Emboss);
+            var ker = new Kernel(this, 3, 3, Emboss);
             ker.Show();
         }
 
@@ -244,8 +262,12 @@ namespace Graphics1
                 h = Int32.Parse(textBox1.Text);
                 w = Int32.Parse(textBox2.Text);
             }
-            catch (Exception) { return; }
-            var ker = new Kernel(h, w);
+            catch (System.FormatException)
+            {
+                MessageBox.Show("Please enter integers");
+                return;
+            }
+            var ker = new Kernel(this, h, w);
             ker.Show();
         }
     }

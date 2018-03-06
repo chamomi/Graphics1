@@ -29,65 +29,77 @@
         private void InitializeComponent()
         {
             this.Table = new System.Windows.Forms.TableLayoutPanel();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.button1 = new System.Windows.Forms.Button();
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.menuToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.divisorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.offsetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.applyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.divisorBox = new System.Windows.Forms.ToolStripTextBox();
+            this.offsetBox = new System.Windows.Forms.ToolStripTextBox();
+            this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // Table
             // 
-            this.Table.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.Table.Location = new System.Drawing.Point(0, 0);
+            this.Table.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 157F));
+            this.Table.Location = new System.Drawing.Point(0, 27);
             this.Table.Name = "Table";
+            this.Table.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.Table.Size = new System.Drawing.Size(157, 135);
             this.Table.TabIndex = 0;
             // 
-            // label1
+            // menuStrip1
             // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label1.Location = new System.Drawing.Point(15, 207);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(47, 15);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "Divisor:";
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.menuToolStripMenuItem,
+            this.applyToolStripMenuItem});
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(448, 24);
+            this.menuStrip1.TabIndex = 6;
+            this.menuStrip1.Text = "menuStrip1";
             // 
-            // label2
+            // menuToolStripMenuItem
             // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label2.Location = new System.Drawing.Point(104, 207);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(41, 15);
-            this.label2.TabIndex = 2;
-            this.label2.Text = "Offset:";
+            this.menuToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.divisorToolStripMenuItem,
+            this.offsetToolStripMenuItem});
+            this.menuToolStripMenuItem.Name = "menuToolStripMenuItem";
+            this.menuToolStripMenuItem.Size = new System.Drawing.Size(50, 20);
+            this.menuToolStripMenuItem.Text = "Menu";
             // 
-            // textBox1
+            // divisorToolStripMenuItem
             // 
-            this.textBox1.Location = new System.Drawing.Point(18, 235);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(50, 20);
-            this.textBox1.TabIndex = 3;
-            this.textBox1.Text = "1";
+            this.divisorToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.divisorBox});
+            this.divisorToolStripMenuItem.Name = "divisorToolStripMenuItem";
+            this.divisorToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.divisorToolStripMenuItem.Text = "Divisor";
             // 
-            // textBox2
+            // offsetToolStripMenuItem
             // 
-            this.textBox2.Location = new System.Drawing.Point(107, 235);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(50, 20);
-            this.textBox2.TabIndex = 4;
-            this.textBox2.Text = "0";
+            this.offsetToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.offsetBox});
+            this.offsetToolStripMenuItem.Name = "offsetToolStripMenuItem";
+            this.offsetToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.offsetToolStripMenuItem.Text = "Offset";
             // 
-            // button1
+            // applyToolStripMenuItem
             // 
-            this.button1.Location = new System.Drawing.Point(18, 271);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 5;
-            this.button1.Text = "Apply";
-            this.button1.UseVisualStyleBackColor = true;
+            this.applyToolStripMenuItem.Name = "applyToolStripMenuItem";
+            this.applyToolStripMenuItem.Size = new System.Drawing.Size(50, 20);
+            this.applyToolStripMenuItem.Text = "Apply";
+            this.applyToolStripMenuItem.Click += new System.EventHandler(this.applyToolStripMenuItem_Click);
+            // 
+            // divisorBox
+            // 
+            this.divisorBox.Name = "divisorBox";
+            this.divisorBox.Size = new System.Drawing.Size(100, 23);
+            // 
+            // offsetBox
+            // 
+            this.offsetBox.Name = "offsetBox";
+            this.offsetBox.Size = new System.Drawing.Size(100, 23);
             // 
             // Kernel
             // 
@@ -96,15 +108,14 @@
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.ClientSize = new System.Drawing.Size(448, 309);
-            this.Controls.Add(this.button1);
-            this.Controls.Add(this.textBox2);
-            this.Controls.Add(this.textBox1);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.label1);
             this.Controls.Add(this.Table);
+            this.Controls.Add(this.menuStrip1);
+            this.MainMenuStrip = this.menuStrip1;
             this.Name = "Kernel";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Kernel";
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -113,10 +124,12 @@
         #endregion
 
         private System.Windows.Forms.TableLayoutPanel Table;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.TextBox textBox2;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem menuToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem divisorToolStripMenuItem;
+        private System.Windows.Forms.ToolStripTextBox divisorBox;
+        private System.Windows.Forms.ToolStripMenuItem offsetToolStripMenuItem;
+        private System.Windows.Forms.ToolStripTextBox offsetBox;
+        private System.Windows.Forms.ToolStripMenuItem applyToolStripMenuItem;
     }
 }

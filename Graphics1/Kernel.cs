@@ -1,20 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Graphics1
 {
     public partial class Kernel : Form
     {
-        public Kernel(int height, int width, int[,] kernel = null, int divisor = 1, int offset = 0)
+        Form1 parent = null;
+        public Kernel(Form1 par, int height, int width, int[,] kernel = null, int divisor = 1, int offset = 0)
         {
             InitializeComponent();
+            parent = par;
 
             Table.Controls.Clear();
             Table.ColumnStyles.Clear();
@@ -36,8 +31,8 @@ namespace Graphics1
                     Table.Controls.Add(tbox, j, i);
                 }
 
-            textBox1.Text = divisor.ToString();
-            textBox2.Text = offset.ToString();
+            divisorBox.Text = divisor.ToString();
+            offsetBox.Text = offset.ToString();
 
             if(kernel!=null)
             {
@@ -47,5 +42,25 @@ namespace Graphics1
             }
         }
 
+        private void applyToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                int divisor = Int32.Parse(divisorBox.Text);
+                int offset = Int32.Parse(offsetBox.Text);
+
+                int[,] kernel = new int[Table.RowCount, Table.ColumnCount];
+                for (int i = 0; i < Table.RowCount; i++)
+                    for (int j = 0; j < Table.ColumnCount; j++)
+                        kernel[i, j] = Int32.Parse(Table.GetControlFromPosition(j, i).Text);
+
+                parent.applyCustom(kernel, divisor, offset);
+                this.Close();
+            }
+            catch(System.FormatException)
+            {
+                MessageBox.Show("Please check that all kernel elements, divisor and offset are integers");
+            }
+        }
     }
 }
