@@ -33,8 +33,8 @@ namespace Graphics1
             op.Filter = "JPeg Image|*.jpg|Bitmap Image|*.bmp|Gif Image|*.gif";
             if (op.ShowDialog() == DialogResult.OK)
             {
-                //pictureBox1.Image = Grayscale(Image.FromFile(op.FileName));
-                pictureBox1.Image = Image.FromFile(op.FileName);
+                pictureBox1.Image = Grayscale(Image.FromFile(op.FileName));
+                //pictureBox1.Image = Image.FromFile(op.FileName);
             }
         }
 
@@ -54,7 +54,7 @@ namespace Graphics1
                 for (int i = 0; i < b.Width; i++)
                 {
                     c = b.GetPixel(i, j);
-                    int avg = (c.R + c.G + c.B) / 3;
+                    int avg = (int)(c.R * 0.3 + c.G * 0.6 + c.B * 0.1);
                     try
                     {
                         b.SetPixel(i, j, Color.FromArgb(c.A, avg, avg, avg));
@@ -269,6 +269,32 @@ namespace Graphics1
             }
             var ker = new Kernel(this, h, w);
             ker.Show();
+        }
+
+        //Dithering
+        private void randomToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Random rnd = new Random();
+            try
+            {
+                Color c;
+                Bitmap b = new Bitmap(pictureBox1.Image);
+                for (int j = 0; j < b.Height; j++)
+                    for (int i = 0; i < b.Width; i++)
+                    {
+                        c = b.GetPixel(i, j);
+                        int threshold = rnd.Next(256);
+                        if(c.R < threshold)
+                            b.SetPixel(i, j, Color.FromArgb(c.A, 0, 0, 0));
+                        else
+                            b.SetPixel(i, j, Color.FromArgb(c.A, 255, 255, 255));
+                    }
+                pictureBox2.Image = b;
+            }
+            catch (NullReferenceException)
+            {
+                MessageBox.Show("No initial file was chosen");
+            }
         }
     }
 }

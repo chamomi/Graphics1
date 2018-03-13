@@ -55,7 +55,7 @@ namespace Graphics1
                         kernel[i, j] = Int32.Parse(Table.GetControlFromPosition(j, i).Text);
 
                 parent.applyCustom(kernel, divisor, offset);
-                this.Close();
+                //this.Close();
             }
             catch(System.FormatException)
             {

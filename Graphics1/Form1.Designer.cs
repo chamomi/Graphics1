@@ -53,6 +53,8 @@
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
+            this.ditheringToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.randomToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
@@ -63,7 +65,8 @@
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
             this.filtersToolStripMenuItem,
-            this.loadKernelsToolStripMenuItem});
+            this.loadKernelsToolStripMenuItem,
+            this.ditheringToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(1053, 24);
@@ -266,6 +269,21 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.Generate_Click);
             // 
+            // ditheringToolStripMenuItem
+            // 
+            this.ditheringToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.randomToolStripMenuItem});
+            this.ditheringToolStripMenuItem.Name = "ditheringToolStripMenuItem";
+            this.ditheringToolStripMenuItem.Size = new System.Drawing.Size(68, 20);
+            this.ditheringToolStripMenuItem.Text = "Dithering";
+            // 
+            // randomToolStripMenuItem
+            // 
+            this.randomToolStripMenuItem.Name = "randomToolStripMenuItem";
+            this.randomToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.randomToolStripMenuItem.Text = "Random";
+            this.randomToolStripMenuItem.Click += new System.EventHandler(this.randomToolStripMenuItem_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -319,6 +337,8 @@
         private System.Windows.Forms.ToolStripMenuItem sharpeningToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem edgeDetectionToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem embossToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem ditheringToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem randomToolStripMenuItem;
     }
 }
 
