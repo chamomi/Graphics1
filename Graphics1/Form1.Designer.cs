@@ -46,6 +46,10 @@
             this.sharpeningToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.edgeDetectionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.embossToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.ditheringToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.randomToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.averageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.orderedToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.label1 = new System.Windows.Forms.Label();
@@ -53,8 +57,10 @@
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
-            this.ditheringToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.randomToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem5 = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
@@ -206,6 +212,42 @@
             this.embossToolStripMenuItem1.Text = "Emboss";
             this.embossToolStripMenuItem1.Click += new System.EventHandler(this.embossToolStripMenuItem1_Click);
             // 
+            // ditheringToolStripMenuItem
+            // 
+            this.ditheringToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.randomToolStripMenuItem,
+            this.averageToolStripMenuItem,
+            this.orderedToolStripMenuItem});
+            this.ditheringToolStripMenuItem.Name = "ditheringToolStripMenuItem";
+            this.ditheringToolStripMenuItem.Size = new System.Drawing.Size(68, 20);
+            this.ditheringToolStripMenuItem.Text = "Dithering";
+            // 
+            // randomToolStripMenuItem
+            // 
+            this.randomToolStripMenuItem.Name = "randomToolStripMenuItem";
+            this.randomToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.randomToolStripMenuItem.Text = "Random";
+            this.randomToolStripMenuItem.Click += new System.EventHandler(this.randomToolStripMenuItem_Click);
+            // 
+            // averageToolStripMenuItem
+            // 
+            this.averageToolStripMenuItem.Name = "averageToolStripMenuItem";
+            this.averageToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.averageToolStripMenuItem.Text = "Average";
+            this.averageToolStripMenuItem.Click += new System.EventHandler(this.averageToolStripMenuItem_Click);
+            // 
+            // orderedToolStripMenuItem
+            // 
+            this.orderedToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItem2,
+            this.toolStripMenuItem3,
+            this.toolStripMenuItem4,
+            this.toolStripMenuItem5});
+            this.orderedToolStripMenuItem.Name = "orderedToolStripMenuItem";
+            this.orderedToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.orderedToolStripMenuItem.Text = "Ordered";
+            this.orderedToolStripMenuItem.Click += new System.EventHandler(this.orderedToolStripMenuItem_Click);
+            // 
             // pictureBox1
             // 
             this.pictureBox1.BackColor = System.Drawing.Color.White;
@@ -269,20 +311,35 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.Generate_Click);
             // 
-            // ditheringToolStripMenuItem
+            // toolStripMenuItem2
             // 
-            this.ditheringToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.randomToolStripMenuItem});
-            this.ditheringToolStripMenuItem.Name = "ditheringToolStripMenuItem";
-            this.ditheringToolStripMenuItem.Size = new System.Drawing.Size(68, 20);
-            this.ditheringToolStripMenuItem.Text = "Dithering";
+            this.toolStripMenuItem2.Checked = true;
+            this.toolStripMenuItem2.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(152, 22);
+            this.toolStripMenuItem2.Text = "2";
+            this.toolStripMenuItem2.Click += new System.EventHandler(this.Click2);
             // 
-            // randomToolStripMenuItem
+            // toolStripMenuItem3
             // 
-            this.randomToolStripMenuItem.Name = "randomToolStripMenuItem";
-            this.randomToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.randomToolStripMenuItem.Text = "Random";
-            this.randomToolStripMenuItem.Click += new System.EventHandler(this.randomToolStripMenuItem_Click);
+            this.toolStripMenuItem3.Name = "toolStripMenuItem3";
+            this.toolStripMenuItem3.Size = new System.Drawing.Size(152, 22);
+            this.toolStripMenuItem3.Text = "3";
+            this.toolStripMenuItem3.Click += new System.EventHandler(this.Click3);
+            // 
+            // toolStripMenuItem4
+            // 
+            this.toolStripMenuItem4.Name = "toolStripMenuItem4";
+            this.toolStripMenuItem4.Size = new System.Drawing.Size(152, 22);
+            this.toolStripMenuItem4.Text = "4";
+            this.toolStripMenuItem4.Click += new System.EventHandler(this.Click4);
+            // 
+            // toolStripMenuItem5
+            // 
+            this.toolStripMenuItem5.Name = "toolStripMenuItem5";
+            this.toolStripMenuItem5.Size = new System.Drawing.Size(152, 22);
+            this.toolStripMenuItem5.Text = "6";
+            this.toolStripMenuItem5.Click += new System.EventHandler(this.Click5);
             // 
             // Form1
             // 
@@ -339,6 +396,12 @@
         private System.Windows.Forms.ToolStripMenuItem embossToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem ditheringToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem randomToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem averageToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem orderedToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem2;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem3;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem4;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem5;
     }
 }
 

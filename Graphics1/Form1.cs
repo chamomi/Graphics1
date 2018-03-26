@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -13,6 +14,10 @@ namespace Graphics1
         int[,] Sharp = new int[3, 3] { { -1, -1, -1 }, { -1, 9, -1 }, { -1, -1, -1 } };
         int[,] Edge = new int[3, 3] { { -1, -1, -1 }, { -1, 8, -1 }, { -1, -1, -1 } };
         int[,] Emboss = new int[3, 3] { { -1, -1, 0 }, { -1, 1, 1 }, { 0, 1, 1 } };
+        int[,] D2 = new int[2, 2] { { 1, 3 }, { 4, 2 } };
+        int[,] D3 = new int[3, 3] { { 3, 7, 4 }, { 6, 1, 9 }, { 2, 8, 5 } };
+        int[,] D4 = new int[4, 4] { { 1, 9, 3, 11 }, { 13, 5, 15, 7 }, { 4, 12, 2, 10 }, { 16, 8, 14, 5 } };
+        int[,] D6 = new int[6, 6] { { 9, 25, 13, 11, 27, 15 }, { 21, 1, 33, 23, 3, 35 }, { 5, 29, 17, 7, 31, 19 }, { 12, 28, 16, 10, 26, 14 }, { 24, 4, 36, 22, 2, 34 }, { 8, 32, 20, 6, 30, 18 } };
 
         public Form1()
         {
@@ -295,6 +300,98 @@ namespace Graphics1
             {
                 MessageBox.Show("No initial file was chosen");
             }
+        }
+
+        private void averageToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Color c;
+                int threshold = 0;
+                Bitmap b = new Bitmap(pictureBox1.Image);
+                for (int j = 0; j < b.Height; j++)
+                    for (int i = 0; i < b.Width; i++)
+                    {
+                        c = b.GetPixel(i, j);
+                        threshold += c.R;
+                    }
+                threshold /= b.Height * b.Width;
+                for (int j = 0; j < b.Height; j++)
+                    for (int i = 0; i < b.Width; i++)
+                    {
+                        c = b.GetPixel(i, j);
+                        if (c.R < threshold)
+                            b.SetPixel(i, j, Color.FromArgb(c.A, 0, 0, 0));
+                        else
+                            b.SetPixel(i, j, Color.FromArgb(c.A, 255, 255, 255));
+                    }
+                pictureBox2.Image = b;
+            }
+            catch (NullReferenceException)
+            {
+                MessageBox.Show("No initial file was chosen");
+            }
+        }
+
+        private void orderedToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Color c;
+                Bitmap bit = new Bitmap(pictureBox1.Image);
+                for (int j = 0; j < bit.Height; j++)
+                    for (int i = 0; i < bit.Width; i++)
+                    {
+                        c = bit.GetPixel(i, j);
+                        double threshold = 0;
+                        if (toolStripMenuItem2.Checked) threshold = (double)D2[i % 2, j % 2] / 5;
+                        else if (toolStripMenuItem3.Checked) threshold = (double)D3[i % 3, j % 3] / 10;
+                        else if (toolStripMenuItem4.Checked) threshold = (double)D4[i % 4, j % 4] / 17;
+                        else if (toolStripMenuItem5.Checked) threshold = (double)D6[i % 6, j % 6] / 37;
+
+                        if (c.R < threshold * 255)
+                            bit.SetPixel(i, j, Color.FromArgb(c.A, 0, 0, 0));
+                        else
+                            bit.SetPixel(i, j, Color.FromArgb(c.A, 255, 255, 255));
+                    }
+                pictureBox2.Image = bit;
+            }
+            catch (NullReferenceException)
+            {
+                MessageBox.Show("No initial file was chosen");
+            }
+        }
+
+        private void Click2(object sender, EventArgs e)
+        {
+            toolStripMenuItem2.Checked = true;
+            if (toolStripMenuItem3.Checked) toolStripMenuItem3.Checked = false;
+            if (toolStripMenuItem4.Checked) toolStripMenuItem4.Checked = false;
+            if (toolStripMenuItem5.Checked) toolStripMenuItem5.Checked = false;
+        }
+
+        private void Click3(object sender, EventArgs e)
+        {
+            toolStripMenuItem3.Checked = true;
+            if (toolStripMenuItem2.Checked) toolStripMenuItem2.Checked = false;
+            if (toolStripMenuItem4.Checked) toolStripMenuItem4.Checked = false;
+            if (toolStripMenuItem5.Checked) toolStripMenuItem5.Checked = false;
+        }
+
+        private void Click4(object sender, EventArgs e)
+        {
+            toolStripMenuItem4.Checked = true;
+            if (toolStripMenuItem3.Checked) toolStripMenuItem3.Checked = false;
+            if (toolStripMenuItem2.Checked) toolStripMenuItem2.Checked = false;
+            if (toolStripMenuItem5.Checked) toolStripMenuItem5.Checked = false;
+        }
+
+        private void Click5(object sender, EventArgs e)
+        {
+            toolStripMenuItem5.Checked = true;
+            if (toolStripMenuItem3.Checked) toolStripMenuItem3.Checked = false;
+            if (toolStripMenuItem4.Checked) toolStripMenuItem4.Checked = false;
+            if (toolStripMenuItem2.Checked) toolStripMenuItem2.Checked = false;
         }
     }
 }
