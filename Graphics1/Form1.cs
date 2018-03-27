@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
@@ -22,6 +23,12 @@ namespace Graphics1
         public Form1()
         {
             InitializeComponent();
+            comboBox1.Items.Add("2");
+            comboBox1.Items.Add("4");
+            comboBox1.Items.Add("8");
+            comboBox1.Items.Add("16");
+            comboBox1.SelectedIndex = 0;
+            comboBox1.DropDownStyle = ComboBoxStyle.DropDownList;
         }
 
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
@@ -282,17 +289,32 @@ namespace Graphics1
             Random rnd = new Random();
             try
             {
+                List<int> thr = new List<int>();
                 Color c;
                 Bitmap b = new Bitmap(pictureBox1.Image);
                 for (int j = 0; j < b.Height; j++)
                     for (int i = 0; i < b.Width; i++)
                     {
                         c = b.GetPixel(i, j);
-                        int threshold = rnd.Next(256);
-                        if(c.R < threshold)
-                            b.SetPixel(i, j, Color.FromArgb(c.A, 0, 0, 0));
-                        else
-                            b.SetPixel(i, j, Color.FromArgb(c.A, 255, 255, 255));
+                        for (int k = 0; k < Int32.Parse(comboBox1.SelectedItem.ToString()); k++)
+                        {
+                            int threshold = rnd.Next(256);
+                            thr.Add(threshold);
+                        }
+                        thr.Sort();
+                        int colors = Int32.Parse(comboBox1.SelectedItem.ToString());
+                        bool set = false;
+                        foreach (var th in thr)
+                        {
+                            if (c.R < th)
+                            {
+                                b.SetPixel(i, j, Color.FromArgb(c.A, Check((double)255 * thr.IndexOf(th) / colors), Check((double)255 * thr.IndexOf(th) / colors), Check((double)255 * thr.IndexOf(th) / colors)));
+                                set = true;
+                                break;
+                            }
+                        }
+                        if (!set) b.SetPixel(i, j, Color.FromArgb(c.A, 255, 255, 255));
+                        thr.Clear();
                     }
                 pictureBox2.Image = b;
             }
@@ -306,6 +328,7 @@ namespace Graphics1
         {
             try
             {
+                //List<int> thr = new List<int>();
                 Color c;
                 int threshold = 0;
                 Bitmap b = new Bitmap(pictureBox1.Image);
@@ -392,6 +415,71 @@ namespace Graphics1
             if (toolStripMenuItem3.Checked) toolStripMenuItem3.Checked = false;
             if (toolStripMenuItem4.Checked) toolStripMenuItem4.Checked = false;
             if (toolStripMenuItem2.Checked) toolStripMenuItem2.Checked = false;
+        }
+
+        private void medianCutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            int k = Int32.Parse(toolStripTextBox1.Text);
+            if(!IsPowerOfTwo((ulong)k)) 
+            {
+                MessageBox.Show("k can be only power of 2");
+                return;
+            }
+            List<Range> list = new List<Range>();
+            Color c;
+
+            int min = 255, max = 0;
+            Bitmap b1 = new Bitmap(pictureBox1.Image);
+            for (int j = 0; j < b1.Height; j++)
+                for (int i = 0; i < b1.Width; i++)
+                {
+                    c = b1.GetPixel(i, j);
+                    if (c.R < min) min = c.R;
+                    if (c.R > max) max = c.R;
+                }
+            list.Add(new Range(min, max));
+
+            for (int i=0;i<(k-1);i++)
+            {
+                int len = list.Count;
+                for(int j=0;j<len;j++)
+                {
+                    list.Add(new Range(list[0].start, list[0].center));
+                    list.Add(new Range(list[0].center, list[0].end));
+                    list.RemoveAt(0);
+                }
+            }
+
+            Bitmap b = new Bitmap(pictureBox1.Image);
+            for (int j = 0; j < b.Height; j++)
+                for (int i = 0; i < b.Width; i++)
+                {
+                    c = b.GetPixel(i, j);
+                    int inten = 0;
+                    foreach(var r in list)
+                    {
+                        if ((c.R >= r.start) && (c.R <= r.end))
+                        {
+                            inten = r.center;
+                            break;
+                        }
+                    }
+                    try
+                    {
+                        b.SetPixel(i, j, Color.FromArgb(c.A, inten, inten, inten));
+                    }
+                    catch (InvalidOperationException)
+                    {
+                        MessageBox.Show("Images with indexes pixels are unfortunately unsupported");
+                        break;
+                    }
+                }
+            pictureBox2.Image = b;
+        }
+
+        bool IsPowerOfTwo(ulong x)
+        {
+            return (x != 0) && ((x & (x - 1)) == 0);
         }
     }
 }
