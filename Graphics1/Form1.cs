@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -58,6 +57,7 @@ namespace Graphics1
             else return (int)n;
         }
 
+        //Filters
         private Bitmap Grayscale(Image img)
         {
             Color c;
@@ -283,6 +283,7 @@ namespace Graphics1
             ker.Show();
         }
 
+        
         //Dithering
         private void randomToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -394,21 +395,36 @@ namespace Graphics1
             try
             {
                 Color c;
+                int k = Int32.Parse(comboBox1.SelectedItem.ToString());
+                List<int> levels = new List<int>();
+                int step = 255 / (k - 1);
+                for (int i = 0; i < k; i++)
+                    levels.Add(i * step);
                 Bitmap bit = new Bitmap(pictureBox1.Image);
                 for (int j = 0; j < bit.Height; j++)
                     for (int i = 0; i < bit.Width; i++)
                     {
                         c = bit.GetPixel(i, j);
+
+                        double col = Math.Floor(((k - 1) * c.R / 255.0));
+                        double rem = (k - 1) * c.R / 255.0 - col;
+
                         double threshold = 0;
                         if (toolStripMenuItem2.Checked) threshold = (double)D2[i % 2, j % 2] / 5;
                         else if (toolStripMenuItem3.Checked) threshold = (double)D3[i % 3, j % 3] / 10;
                         else if (toolStripMenuItem4.Checked) threshold = (double)D4[i % 4, j % 4] / 17;
                         else if (toolStripMenuItem5.Checked) threshold = (double)D6[i % 6, j % 6] / 37;
 
-                        if (c.R < threshold * 255)
-                            bit.SetPixel(i, j, Color.FromArgb(c.A, 0, 0, 0));
-                        else
-                            bit.SetPixel(i, j, Color.FromArgb(c.A, 255, 255, 255));
+                        if (rem >= threshold) col++;
+                        try
+                        {
+                            bit.SetPixel(i, j, Color.FromArgb(c.A, levels[(int)col], levels[(int)col], levels[(int)col]));
+                        }
+                        catch (InvalidOperationException)
+                        {
+                            MessageBox.Show("Images with indexes pixels are unfortunately unsupported");
+                            break;
+                        }
                     }
                 pictureBox2.Image = bit;
             }
@@ -416,38 +432,6 @@ namespace Graphics1
             {
                 MessageBox.Show("No initial file was chosen");
             }
-        }
-
-        private void Click2(object sender, EventArgs e)
-        {
-            toolStripMenuItem2.Checked = true;
-            if (toolStripMenuItem3.Checked) toolStripMenuItem3.Checked = false;
-            if (toolStripMenuItem4.Checked) toolStripMenuItem4.Checked = false;
-            if (toolStripMenuItem5.Checked) toolStripMenuItem5.Checked = false;
-        }
-
-        private void Click3(object sender, EventArgs e)
-        {
-            toolStripMenuItem3.Checked = true;
-            if (toolStripMenuItem2.Checked) toolStripMenuItem2.Checked = false;
-            if (toolStripMenuItem4.Checked) toolStripMenuItem4.Checked = false;
-            if (toolStripMenuItem5.Checked) toolStripMenuItem5.Checked = false;
-        }
-
-        private void Click4(object sender, EventArgs e)
-        {
-            toolStripMenuItem4.Checked = true;
-            if (toolStripMenuItem3.Checked) toolStripMenuItem3.Checked = false;
-            if (toolStripMenuItem2.Checked) toolStripMenuItem2.Checked = false;
-            if (toolStripMenuItem5.Checked) toolStripMenuItem5.Checked = false;
-        }
-
-        private void Click5(object sender, EventArgs e)
-        {
-            toolStripMenuItem5.Checked = true;
-            if (toolStripMenuItem3.Checked) toolStripMenuItem3.Checked = false;
-            if (toolStripMenuItem4.Checked) toolStripMenuItem4.Checked = false;
-            if (toolStripMenuItem2.Checked) toolStripMenuItem2.Checked = false;
         }
 
         private void medianCutToolStripMenuItem_Click(object sender, EventArgs e)
@@ -522,11 +506,6 @@ namespace Graphics1
             pictureBox2.Image = b;
         }
 
-        bool IsPowerOfTwo(ulong x)
-        {
-            return (x != 0) && ((x & (x - 1)) == 0);
-        }
-
         private void uniformToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
@@ -594,6 +573,44 @@ namespace Graphics1
             {
                 MessageBox.Show("No initial file was chosen");
             }
+        }
+
+        //help functions
+        bool IsPowerOfTwo(ulong x)
+        {
+            return (x != 0) && ((x & (x - 1)) == 0);
+        }
+
+        private void Click2(object sender, EventArgs e)
+        {
+            toolStripMenuItem2.Checked = true;
+            if (toolStripMenuItem3.Checked) toolStripMenuItem3.Checked = false;
+            if (toolStripMenuItem4.Checked) toolStripMenuItem4.Checked = false;
+            if (toolStripMenuItem5.Checked) toolStripMenuItem5.Checked = false;
+        }
+
+        private void Click3(object sender, EventArgs e)
+        {
+            toolStripMenuItem3.Checked = true;
+            if (toolStripMenuItem2.Checked) toolStripMenuItem2.Checked = false;
+            if (toolStripMenuItem4.Checked) toolStripMenuItem4.Checked = false;
+            if (toolStripMenuItem5.Checked) toolStripMenuItem5.Checked = false;
+        }
+
+        private void Click4(object sender, EventArgs e)
+        {
+            toolStripMenuItem4.Checked = true;
+            if (toolStripMenuItem3.Checked) toolStripMenuItem3.Checked = false;
+            if (toolStripMenuItem2.Checked) toolStripMenuItem2.Checked = false;
+            if (toolStripMenuItem5.Checked) toolStripMenuItem5.Checked = false;
+        }
+
+        private void Click5(object sender, EventArgs e)
+        {
+            toolStripMenuItem5.Checked = true;
+            if (toolStripMenuItem3.Checked) toolStripMenuItem3.Checked = false;
+            if (toolStripMenuItem4.Checked) toolStripMenuItem4.Checked = false;
+            if (toolStripMenuItem2.Checked) toolStripMenuItem2.Checked = false;
         }
     }
 }
