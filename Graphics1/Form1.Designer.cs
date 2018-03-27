@@ -67,6 +67,12 @@
             this.uniformToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.medianCutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripTextBox1 = new System.Windows.Forms.ToolStripTextBox();
+            this.krToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.kgToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.kbToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripTextBox2 = new System.Windows.Forms.ToolStripTextBox();
+            this.toolStripTextBox5 = new System.Windows.Forms.ToolStripTextBox();
+            this.toolStripTextBox3 = new System.Windows.Forms.ToolStripTextBox();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
@@ -290,7 +296,7 @@
             this.pictureBox1.BackColor = System.Drawing.Color.White;
             this.pictureBox1.Location = new System.Drawing.Point(12, 58);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(400, 330);
+            this.pictureBox1.Size = new System.Drawing.Size(400, 300);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox1.TabIndex = 1;
             this.pictureBox1.TabStop = false;
@@ -300,7 +306,7 @@
             this.pictureBox2.BackColor = System.Drawing.Color.White;
             this.pictureBox2.Location = new System.Drawing.Point(430, 58);
             this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(400, 330);
+            this.pictureBox2.Size = new System.Drawing.Size(400, 300);
             this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox2.TabIndex = 2;
             this.pictureBox2.TabStop = false;
@@ -360,11 +366,11 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label3.Location = new System.Drawing.Point(848, 246);
+            this.label3.Location = new System.Drawing.Point(848, 234);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(160, 15);
+            this.label3.Size = new System.Drawing.Size(157, 30);
             this.label3.TabIndex = 9;
-            this.label3.Text = "Select number of graylevels:";
+            this.label3.Text = "Select number of graylevels\r\nfor dithering:";
             // 
             // colorQuantizationToolStripMenuItem
             // 
@@ -377,9 +383,14 @@
             // 
             // uniformToolStripMenuItem
             // 
+            this.uniformToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.krToolStripMenuItem,
+            this.kgToolStripMenuItem,
+            this.kbToolStripMenuItem});
             this.uniformToolStripMenuItem.Name = "uniformToolStripMenuItem";
             this.uniformToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.uniformToolStripMenuItem.Text = "Uniform";
+            this.uniformToolStripMenuItem.Click += new System.EventHandler(this.uniformToolStripMenuItem_Click);
             // 
             // medianCutToolStripMenuItem
             // 
@@ -395,6 +406,48 @@
             this.toolStripTextBox1.Name = "toolStripTextBox1";
             this.toolStripTextBox1.Size = new System.Drawing.Size(100, 23);
             this.toolStripTextBox1.Text = "2";
+            // 
+            // krToolStripMenuItem
+            // 
+            this.krToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripTextBox2});
+            this.krToolStripMenuItem.Name = "krToolStripMenuItem";
+            this.krToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.krToolStripMenuItem.Text = "Kr";
+            // 
+            // kgToolStripMenuItem
+            // 
+            this.kgToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripTextBox5});
+            this.kgToolStripMenuItem.Name = "kgToolStripMenuItem";
+            this.kgToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.kgToolStripMenuItem.Text = "Kg";
+            // 
+            // kbToolStripMenuItem
+            // 
+            this.kbToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripTextBox3});
+            this.kbToolStripMenuItem.Name = "kbToolStripMenuItem";
+            this.kbToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.kbToolStripMenuItem.Text = "Kb";
+            // 
+            // toolStripTextBox2
+            // 
+            this.toolStripTextBox2.Name = "toolStripTextBox2";
+            this.toolStripTextBox2.Size = new System.Drawing.Size(100, 23);
+            this.toolStripTextBox2.Text = "2";
+            // 
+            // toolStripTextBox5
+            // 
+            this.toolStripTextBox5.Name = "toolStripTextBox5";
+            this.toolStripTextBox5.Size = new System.Drawing.Size(100, 23);
+            this.toolStripTextBox5.Text = "2";
+            // 
+            // toolStripTextBox3
+            // 
+            this.toolStripTextBox3.Name = "toolStripTextBox3";
+            this.toolStripTextBox3.Size = new System.Drawing.Size(100, 23);
+            this.toolStripTextBox3.Text = "2";
             // 
             // Form1
             // 
@@ -465,6 +518,12 @@
         private System.Windows.Forms.ToolStripMenuItem uniformToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem medianCutToolStripMenuItem;
         private System.Windows.Forms.ToolStripTextBox toolStripTextBox1;
+        private System.Windows.Forms.ToolStripMenuItem krToolStripMenuItem;
+        private System.Windows.Forms.ToolStripTextBox toolStripTextBox2;
+        private System.Windows.Forms.ToolStripMenuItem kgToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem kbToolStripMenuItem;
+        private System.Windows.Forms.ToolStripTextBox toolStripTextBox5;
+        private System.Windows.Forms.ToolStripTextBox toolStripTextBox3;
     }
 }
 

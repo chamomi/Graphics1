@@ -338,7 +338,7 @@ namespace Graphics1
                 while(list.Count<(k+1))
                 {
                     for (int j = 0; j < list.Count - 1; j++)
-                        list1.Add(findAverage(new Range(list[j], list[j + 1])));
+                        list1.Add(findAverage(list[j], list[j + 1]));
                     foreach (var el in list1)
                         list.Add(el);
                     list1.Clear();
@@ -371,7 +371,7 @@ namespace Graphics1
             }
         }
 
-        private int findAverage(Range r)
+        private int findAverage(int start, int end)
         {
             Color c;
             int threshold = 0, count = 0;
@@ -380,7 +380,7 @@ namespace Graphics1
                 for (int i = 0; i < b.Width; i++)
                 {
                     c = b.GetPixel(i, j);
-                    if ((c.R >= r.start) && (c.R <= r.end))
+                    if ((c.R >= start) && (c.R <= end))
                     {
                         threshold += c.R;
                         count++;
@@ -453,35 +453,49 @@ namespace Graphics1
         private void medianCutToolStripMenuItem_Click(object sender, EventArgs e)
         {
             int k = Int32.Parse(toolStripTextBox1.Text);
+
             if(!IsPowerOfTwo((ulong)k)) 
             {
                 MessageBox.Show("k can be only power of 2");
                 return;
             }
-            List<Range> list = new List<Range>();
-            Color c;
 
-            int min = 255, max = 0;
+            Color c;
+            List<int> intens = new List<int>();
+
             Bitmap b1 = new Bitmap(pictureBox1.Image);
             for (int j = 0; j < b1.Height; j++)
                 for (int i = 0; i < b1.Width; i++)
                 {
                     c = b1.GetPixel(i, j);
-                    if (c.R < min) min = c.R;
-                    if (c.R > max) max = c.R;
+                    intens.Add(c.R);
                 }
-            list.Add(new Range(min, max));
+            intens.Sort();
 
-            for (int i=0;i<(k-1);i++)
+            int step = 0;
+            switch(k)
             {
-                int len = list.Count;
-                for(int j=0;j<len;j++)
-                {
-                    list.Add(new Range(list[0].start, list[0].center));
-                    list.Add(new Range(list[0].center, list[0].end));
-                    list.RemoveAt(0);
-                }
+                case 2:
+                    step = intens.Count / 2;
+                    break;
+                case 4:
+                    step = intens.Count / 4;
+                    break;
+                case 8:
+                    step = intens.Count / 8;
+                    break;
+                case 16:
+                    step = intens.Count / 16;
+                    break;
+                case 32:
+                    step = intens.Count / 32;
+                    break;
             }
+            List<int> thr = new List<int>();
+            thr.Add(0);
+            for (int i = 0; i < (k - 1); i++)
+                thr.Add(intens[step * (i + 1)]);
+            thr.Add(255);
 
             Bitmap b = new Bitmap(pictureBox1.Image);
             for (int j = 0; j < b.Height; j++)
@@ -489,14 +503,12 @@ namespace Graphics1
                 {
                     c = b.GetPixel(i, j);
                     int inten = 0;
-                    foreach(var r in list)
-                    {
-                        if ((c.R >= r.start) && (c.R <= r.end))
+                    for (int a=0;a<thr.Count-1;a++)
+                        if ((c.R >= thr[a]) && (c.R <= thr[a + 1]))
                         {
-                            inten = r.center;
+                            inten = intens[intens.IndexOf(thr[a]) + step / 2];
                             break;
                         }
-                    }
                     try
                     {
                         b.SetPixel(i, j, Color.FromArgb(c.A, inten, inten, inten));
@@ -513,6 +525,35 @@ namespace Graphics1
         bool IsPowerOfTwo(ulong x)
         {
             return (x != 0) && ((x & (x - 1)) == 0);
+        }
+
+        private void uniformToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Color c;
+                Bitmap bit = new Bitmap(pictureBox1.Image);
+                for (int j = 0; j < bit.Height; j++)
+                    for (int i = 0; i < bit.Width; i++)
+                    {
+                        c = bit.GetPixel(i, j);
+                        double threshold = 0;
+                        if (toolStripMenuItem2.Checked) threshold = (double)D2[i % 2, j % 2] / 5;
+                        else if (toolStripMenuItem3.Checked) threshold = (double)D3[i % 3, j % 3] / 10;
+                        else if (toolStripMenuItem4.Checked) threshold = (double)D4[i % 4, j % 4] / 17;
+                        else if (toolStripMenuItem5.Checked) threshold = (double)D6[i % 6, j % 6] / 37;
+
+                        if (c.R < threshold * 255)
+                            bit.SetPixel(i, j, Color.FromArgb(c.A, 0, 0, 0));
+                        else
+                            bit.SetPixel(i, j, Color.FromArgb(c.A, 255, 255, 255));
+                    }
+                pictureBox2.Image = bit;
+            }
+            catch (NullReferenceException)
+            {
+                MessageBox.Show("No initial file was chosen");
+            }
         }
     }
 }
