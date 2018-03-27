@@ -308,7 +308,7 @@ namespace Graphics1
                         {
                             if (c.R < th)
                             {
-                                b.SetPixel(i, j, Color.FromArgb(c.A, Check((double)255 * thr.IndexOf(th) / colors), Check((double)255 * thr.IndexOf(th) / colors), Check((double)255 * thr.IndexOf(th) / colors)));
+                                b.SetPixel(i, j, Color.FromArgb(c.A, Check((double)255 * thr.IndexOf(th) / (colors-1)), Check((double)255 * thr.IndexOf(th) / (colors-1)), Check((double)255 * thr.IndexOf(th) / (colors-1))));
                                 set = true;
                                 break;
                             }
@@ -328,25 +328,40 @@ namespace Graphics1
         {
             try
             {
-                //List<int> thr = new List<int>();
                 Color c;
-                int threshold = 0;
                 Bitmap b = new Bitmap(pictureBox1.Image);
+                int k = Int32.Parse(comboBox1.SelectedItem.ToString());
+                List<int> list = new List<int>();
+                list.Add(0);
+                list.Add(255);
+                List<int> list1 = new List<int>();
+                while(list.Count<(k+1))
+                {
+                    for (int j = 0; j < list.Count - 1; j++)
+                        list1.Add(findAverage(new Range(list[j], list[j + 1])));
+                    foreach (var el in list1)
+                        list.Add(el);
+                    list1.Clear();
+                    list.Sort();
+                }
+                list.RemoveAt(0);
+                list.RemoveAt(list.Count - 1);
+
                 for (int j = 0; j < b.Height; j++)
                     for (int i = 0; i < b.Width; i++)
                     {
                         c = b.GetPixel(i, j);
-                        threshold += c.R;
-                    }
-                threshold /= b.Height * b.Width;
-                for (int j = 0; j < b.Height; j++)
-                    for (int i = 0; i < b.Width; i++)
-                    {
-                        c = b.GetPixel(i, j);
-                        if (c.R < threshold)
-                            b.SetPixel(i, j, Color.FromArgb(c.A, 0, 0, 0));
-                        else
-                            b.SetPixel(i, j, Color.FromArgb(c.A, 255, 255, 255));
+                        bool set = false;
+                        foreach (var th in list)
+                        {
+                            if (c.R < th)
+                            {
+                                b.SetPixel(i, j, Color.FromArgb(c.A, Check((double)255 * list.IndexOf(th) / (k-1)), Check((double)255 * list.IndexOf(th) / (k-1)), Check((double)255 * list.IndexOf(th) / (k-1))));
+                                set = true;
+                                break;
+                            }
+                        }
+                        if (!set) b.SetPixel(i, j, Color.FromArgb(c.A, 255, 255, 255));
                     }
                 pictureBox2.Image = b;
             }
@@ -354,6 +369,24 @@ namespace Graphics1
             {
                 MessageBox.Show("No initial file was chosen");
             }
+        }
+
+        private int findAverage(Range r)
+        {
+            Color c;
+            int threshold = 0, count = 0;
+            Bitmap b = new Bitmap(pictureBox1.Image);
+            for (int j = 0; j < b.Height; j++)
+                for (int i = 0; i < b.Width; i++)
+                {
+                    c = b.GetPixel(i, j);
+                    if ((c.R >= r.start) && (c.R <= r.end))
+                    {
+                        threshold += c.R;
+                        count++;
+                    }
+                }
+            return threshold / count;
         }
 
         private void orderedToolStripMenuItem_Click(object sender, EventArgs e)
