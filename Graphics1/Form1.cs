@@ -531,22 +531,62 @@ namespace Graphics1
         {
             try
             {
+                int kR = Int32.Parse(toolStripTextBox2.Text);
+                int stepR = 255 / kR;
+                List<int> thrR = new List<int>();
+                for (int i = 0; i <= kR; i++)
+                    thrR.Add(stepR * i);
+                int kG = Int32.Parse(toolStripTextBox5.Text);
+                int stepG = 255 / kG;
+                List<int> thrG = new List<int>();
+                for (int i = 0; i <= kG; i++)
+                    thrG.Add(stepG * i);
+                int kB = Int32.Parse(toolStripTextBox3.Text);
+                int stepB = 255 / kB;
+                List<int> thrB = new List<int>();
+                for (int i = 0; i <= kB; i++)
+                    thrB.Add(stepB * i);
+
                 Color c;
                 Bitmap bit = new Bitmap(pictureBox1.Image);
                 for (int j = 0; j < bit.Height; j++)
                     for (int i = 0; i < bit.Width; i++)
                     {
                         c = bit.GetPixel(i, j);
-                        double threshold = 0;
-                        if (toolStripMenuItem2.Checked) threshold = (double)D2[i % 2, j % 2] / 5;
-                        else if (toolStripMenuItem3.Checked) threshold = (double)D3[i % 3, j % 3] / 10;
-                        else if (toolStripMenuItem4.Checked) threshold = (double)D4[i % 4, j % 4] / 17;
-                        else if (toolStripMenuItem5.Checked) threshold = (double)D6[i % 6, j % 6] / 37;
-
-                        if (c.R < threshold * 255)
-                            bit.SetPixel(i, j, Color.FromArgb(c.A, 0, 0, 0));
-                        else
-                            bit.SetPixel(i, j, Color.FromArgb(c.A, 255, 255, 255));
+                        int intenR = 0, intenG = 0, intenB = 0;
+                        for (int a = 0; a < thrR.Count - 1; a++)
+                            if ((c.R >= thrR[a]) && (c.R <= thrR[a + 1]))
+                            {
+                                intenR = thrR[a] + stepR / 2;
+                                break;
+                            }
+                        for (int a = 0; a < thrG.Count - 1; a++)
+                            if ((c.G >= thrG[a]) && (c.G <= thrG[a + 1]))
+                            {
+                                intenG = thrG[a] + stepG / 2;
+                                break;
+                            }
+                        for (int a = 0; a < thrB.Count - 1; a++)
+                            if ((c.B >= thrB[a]) && (c.B <= thrB[a + 1]))
+                            {
+                                intenB = thrB[a] + stepB / 2;
+                                break;
+                            }
+                        if(c.R>=240)
+                        {
+                            if (intenB == 0) intenB = thrB[thrB.Count - 1] - stepB / 2;
+                            if (intenR == 0) intenR = thrR[thrR.Count - 1] - stepR / 2;
+                            if (intenG == 0) intenG = thrG[thrG.Count - 1] - stepG / 2;
+                        }
+                        try
+                        {
+                            bit.SetPixel(i, j, Color.FromArgb(c.A, intenR, intenG, intenB));
+                        }
+                        catch (InvalidOperationException)
+                        {
+                            MessageBox.Show("Images with indexes pixels are unfortunately unsupported");
+                            break;
+                        }
                     }
                 pictureBox2.Image = bit;
             }
